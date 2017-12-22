@@ -13,7 +13,7 @@ class MainMenuScene(Scene):
         
         # add background color
         self.background = SpriteNode(position = self.size / 2, 
-                                     color = 'white', 
+                                     color = 'red', 
                                      parent = self, 
                                      size = self.size)
     
@@ -47,4 +47,3 @@ class MainMenuScene(Scene):
         # this method is called, when user place app from background 
         # back into use. Reload anything you might need.
         pass
-    

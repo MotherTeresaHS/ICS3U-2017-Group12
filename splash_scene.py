@@ -1,4 +1,5 @@
 # Created by: Mr. Coxall
+# Created by: Tochi Kazi
 # Created on: Nov 2017
 # Created for: ICS3U
 # This scene shows a splash screen for 2 seconds,
@@ -21,7 +22,7 @@ class SplashScene(Scene):
         # add MT blue background color
         self.background = SpriteNode(position = self.size / 2, 
                                      color = (0.61, 0.78, 0.87), 
-                                     parent = self, 
+                                     parent = self,
                                      size = self.size)
         self.school_crest = SpriteNode('./assets/sprites/MT_Game_Studio.png',
                                        parent = self,

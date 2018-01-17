@@ -24,26 +24,22 @@ class PauseScene(Scene):
                                      size = self.size)
                                      
         self.brick_text = LabelNode(font = ('Chalkduster',72),
-                                    text = 'CREDIT',
-                                    color = 'white',
+                                    text = 'PAUSED',
+                                    color = 'black',
                                     position = (self.size.x /2,self.size.y * 0.90),
                                     parent = self)
                                     
-                                    
-        self.start_button = LabelNode(text = 'Designed by: Tochi kazi',
-                                      font=('Chalkduster', 20),
-                                      parent = self,
-                                      position = self.size / 2,
-                                      scale = 0.75)
                                       
-        back_button_position = self.size
-        back_button_position.x = 100
-        back_button_position.y = back_button_position.y - 100
-        self.back_button = SpriteNode('./assets/sprites/back_button.png',
+        self.play_button_position = Vector2()
+        self.play_button_position.x = 500
+        self.play_button_position.y = 500
+        self.play_button = SpriteNode('./assets/sprites/play_button.png',
                                        parent = self,
-                                       position = back_button_position)
+                                       position = self.play_button_position)
                                        
-        
+        self.quit_button = SpriteNode('./assets/sprites/quit_button.png',
+                                       position = (500,200),
+                                       parent = self)
     def update(self):
         # this method is called, hopefully, 60 times a second
         pass
@@ -60,7 +56,7 @@ class PauseScene(Scene):
         # this method is called, when user releases a finger from the screen
         
         # if start button is pressed, goto game scene
-        if self.back_button.frame.contains_point(touch.location):
+        if self.play_button.frame.contains_point(touch.location):
             self.dismiss_modal_scene()
 
 

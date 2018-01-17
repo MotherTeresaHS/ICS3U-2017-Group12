@@ -36,12 +36,12 @@ class CreditScene(Scene):
                                       position = self.size / 2,
                                       scale = 0.75)
                                       
-        back_button_position = self.size
-        back_button_position.x = 100
-        back_button_position.y = back_button_position.y - 100
+        self.back_button_position = Vector2()
+        self.back_button_position.x = 150
+        self.back_button_position.y = 700
         self.back_button = SpriteNode('./assets/sprites/back_button.png',
                                        parent = self,
-                                       position = back_button_position)
+                                       position = self.back_button_position)
                                        
         
     def update(self):

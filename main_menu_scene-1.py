@@ -8,6 +8,7 @@ from scene import *
 import ui
 from Help_scene import*
 from Game_scene import*
+from settings_scene import*
 
 class MainMenuScene(Scene):
     def setup(self):
@@ -32,15 +33,19 @@ class MainMenuScene(Scene):
                                       color = 'gold',
                                       position = (self.size.x/2, self.size.y * 0.80),
                                       parent = self)
-        self.start_button = SpriteNode('assets/sprites/start.png',
-                                      position = (self.size.x/2, self.size.y * 0.40),
-                                      size = (300,120),
+        self.start_button = SpriteNode('assets/sprites/play_shaped_button.png',
+                                      position = (200,320),
+                                      size = (200,200),
                                       parent = self)
                                       
-        self.help_button = SpriteNode('assets/sprites/help.png',
-                                          position = (self.size.x/2, self.size.y * 0.20),
-                                          size = (300,120),
+        self.settings_button = SpriteNode('assets/sprites/settings_shaped_button.png',
+                                          position = (500,200),
+                                          size = (200,200),
                                           parent = self)
+        self.help_button = SpriteNode('assets/sprites/help_button.png',
+                                         position = (800,320),
+                                         size = (200,200),
+                                         parent = self)
     def update(self):
         # this method is called, hopefully, 60 times a second
         pass
@@ -60,8 +65,9 @@ class MainMenuScene(Scene):
         if self.start_button.frame.contains_point(touch.location):
             self.present_modal_scene(GameScene())
         elif self.help_button.frame.contains_point(touch.location):
-              self.present_modal_scene(HelpScene())
-        
+            self.present_modal_scene(HelpScene())
+        elif self.settings_button.frame.contains_point(touch.location):
+             self.present_modal_scene(SettingScene())
               
     def did_change_size(self):
         # this method is called, when user changes the orientation of the screen

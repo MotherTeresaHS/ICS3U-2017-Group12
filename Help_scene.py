@@ -35,17 +35,17 @@ class HelpScene(Scene):
                                     position = (self.size.x /2,self.size.y * 0.90),
                                     parent = self)
                                     
-        back_button_position = self.size
-        back_button_position.x = 100
-        back_button_position.y = back_button_position.y - 100
+        self.back_button_position = Vector2()
+        self.back_button_position.x = 150
+        self.back_button_position.y = 700
         self.back_button = SpriteNode('./assets/sprites/back_button.png',
                                        parent = self,
-                                       position = back_button_position)
-        help_button_position = self.size
-        help_button_position.x = 900
-        help_button_position.y = help_button_position.y - 560
-        self.credit_button = SpriteNode('./assets/sprites/credit_button.png',
-                                         position = help_button_position,
+                                       position = self.back_button_position)
+        self.help_button_position = Vector2()
+        self.help_button_position.x = 900
+        self.help_button_position.y = 700
+        self.credit_button = SpriteNode('./assets/sprites/credits_button.png',
+                                         position = self.help_button_position,
                                          size = (100,100),
                                          parent = self)
                                          

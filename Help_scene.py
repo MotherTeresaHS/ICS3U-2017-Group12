@@ -23,7 +23,7 @@ class HelpScene(Scene):
                                      parent = self, 
                                      size = self.size)
                                      
-        self.start_button = LabelNode(text = '- Use the red button which is the shoot button on the left to shoot balls continually form the bar',
+        self.tutorial_text = LabelNode(text = '- Use the red button which is the shoot button on the left to shoot balls continually form the bar',
                                       font=('Chalkduster', 20),
                                       parent = self,
                                       position = self.size / 2,

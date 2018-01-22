@@ -10,7 +10,6 @@ from numpy import random
 from Game_level import*
 from pause_scene import*
 import time 
-#from copy import deepcopy
 
 
 paddle_speed = 30
@@ -41,20 +40,28 @@ class GameScene(Scene):
         self.paddle_target = self.size.x/2
         self.start_time = time.time()
         self.bricks = []
+        if self.size.w > 760:
+         #iPad
+         brick_w, brick_h = 64, 32
+        else:
+         #iPhone
+         brick_w, brick_h = 32, 16
         
         self.fire_button_down = False
         self.Ball_move_speed = 20.0
-        self.missiles = []
-        self.Ball = []
+        self.Balls = []
         self.level = 0
-        self.alien = []
-        self.blocks = []
         self.shoot_ball = []
-        self.alien_attack_rate = 1  
-        self.alien_attack_speed = 20.0
-        self.scale_size = 0.75
         self.score = 0
         self.dead = False
+        self.started = False
+        
+        
+        
+        # this will hold the speed and direction of the ball as an ordered pair
+        self.ball_velocity = Vector2()
+        self.ball_velocity.x = +5.0
+        self.ball_velocity.y = -5.0
         
         # add background color
         background_position = Vector2(self.screen_center_x, 
@@ -67,7 +74,7 @@ class GameScene(Scene):
                                      
         paddle_position = Vector2()
         paddle_position.x = self.screen_center_x
-        paddle_position.y = 100
+        paddle_position.y = self.size.y * 0.10
         self.paddle_target = paddle_position.x
         self.paddle = SpriteNode('pzl:PaddleRed',
                                     parent = self,
@@ -76,7 +83,7 @@ class GameScene(Scene):
                                 
         Ball_position = Vector2()
         Ball_position.x = self.screen_center_x
-        Ball_position.y = 400
+        Ball_position.y = self.size.y/4
         self.Ball = SpriteNode('./assets/sprites/Ball.png',
                                  parent = self,
                                  position = Ball_position,
@@ -84,52 +91,80 @@ class GameScene(Scene):
                                  size = (20,20))
                                        
         fire_button_position = Vector2()
-        fire_button_position.x = self.size_of_screen_x - 100
-        fire_button_position.y = 100
+        fire_button_position.x = self.size.x * 0.90
+        fire_button_position.y = self.size.y * 0.10
         self.fire_button = SpriteNode('./assets/sprites/red_button.png',
                                       parent = self,
                                       position = fire_button_position,
                                       alpha = 0.5,
-                                      scale = self.scale_size)
+                                      size = (100,100))
         self.score_position = Vector2()
-        self.score_position.x = 500
-        self.score_position.y = 720
+        self.score_position.x = self.size.x/2
+        self.score_position.y = self.size.y * 0.95
         self.score_label = LabelNode(text = 'Score: 0',
                                      font=('Helvetica', 40),
                                      parent = self,
                                     position = self.score_position)
         self.hearts_position = Vector2()
-        self.hearts_position.x = 65
-        self.hearts_position.y = 720
+        self.hearts_position.x = self.size.x * 0.10
+        self.hearts_position.y = self.size.y * 0.95
         self.hearts = [SpriteNode('plf:HudHeart_full',
-                                      position = (30 + i * 45, 700),
+                                      position = (30 + i * 45, 720),
                                       parent = self)
                                       for i in range (3)]
                                       
         self.pause_position = Vector2()
-        self.pause_position.x = 935
-        self.pause_position.y = 720 
+        self.pause_position.x = self.size.x * 0.90
+        self.pause_position.y = self.size.y * 0.95
         self.pause_button = SpriteNode('iow:pause_32',
                                        position = (self.pause_position),
                                        parent = self,
                                        size = (40,50))
+            
                                   
-                                  
-
-        right_wall = Rect(self.size.w, 0, 100, self.size.h)
-        left_wall = Rect(-100, 0, 100, self.size.h)
-        top_wall = Rect(0, self.size.h-90, self.size.w, 100)
-        self.walls = [SpriteNode(position=rect.center(), size=rect.size) for rect in (left_wall,
-                      right_wall, top_wall)]
     def new_game(self):
       self.load_level(levels[self.level])
-      self.level = 0
+      
       
     def update(self):
         # this method is called, hopefully, 60 times a second
         self.move_paddle() 
-        self.bounce_ball()
-        self.load_level(levels[self.level])
+        if (self.started == False):
+        	self.load_level(levels[self.level])
+        	self.started = True
+        
+        # check every update to see if a ball has touched a brick
+        else:
+            pass
+            #print(len(self.aliens))
+        # move the ball
+        self.Ball.position = self.Ball.position + self.ball_velocity
+        
+        # now check if the ball has touched the paddle
+        #print(str(self.Ball.frame) + str(self.paddle.frame))
+        if self.Ball.frame.intersects(self.paddle.frame):
+            # you should change the velocity to a different angle here
+            self.ball_velocity.y = self.ball_velocity.y * (-1)
+        
+           
+        # bounce ball off walls
+        if self.Ball.position.y <= 0:
+            self.ball_velocity.y = self.ball_velocity.y * (-1)
+            print('Game over')
+            # really it should not bounce, the game should end
+        if self.Ball.position.x <= 0:
+            self.ball_velocity.x = self.ball_velocity.x * (-1)
+        if self.Ball.position.x >= self.size_of_screen_x:
+            self.ball_velocity.x = self.ball_velocity.x * (-1)
+        if self.Ball.position.y >= self.size_of_screen_y:
+            self.ball_velocity.y = self.ball_velocity.y * (-1)
+        if self.size.w > 760:
+         #iPad
+         brick_w, brick_h = 64, 32
+        else:
+         #iPhone
+         brick_w, brick_h = 32, 16
+         
         
     def load_level(self, level_str):
        lines = level_str.splitlines()
@@ -139,8 +174,8 @@ class GameScene(Scene):
        else:
          #iPhone
          brick_w, brick_h = 32, 16
-       min_x = 230 
-       min_y = 500 
+       min_x = self.size.x - 1055
+       min_y = self.size.y/2 * 0.70
        for y, line in enumerate(reversed(lines)):
          for x, char in enumerate(line):
            if char == ' ': continue
@@ -148,6 +183,7 @@ class GameScene(Scene):
            brick = Brick(char, position=pos, parent=self)
            brick.size = (brick_w, brick_h)
            self.bricks.append(brick)
+           
 			
     def move_paddle(self):
        new = self.paddle_target - self.paddle.position.x
@@ -159,11 +195,9 @@ class GameScene(Scene):
     def touch_began(self, touch):
         # this method is called, when user touches the screen
         x, y = touch.location
-        self.bounce_ball()
         if self.fire_button.frame.contains_point(touch.location):
            self.create_new_ball()
            
-        
         elif self.pause_button.frame.contains_point(touch.location):
               self.present_modal_scene(PauseScene())
         else:
@@ -178,9 +212,9 @@ class GameScene(Scene):
     
     def touch_ended(self, touch):
         # this method is called, when user releases a finger from the screen
+        if self.fire_button.frame.contains_point(touch.location):
+           self.create_new_ball()
         
-        if self.pause_button.frame.contains_point(touch.location):
-              self.present_modal_scene(PauseScene())
     def did_change_size(self):
         # this method is called, when user changes the orientation of the screen
         # thus changing the size of each dimension
@@ -224,26 +258,4 @@ class GameScene(Scene):
         self.shoot_ball[len(self.shoot_ball)-1].run_action(ballShootAction)
        
 
-    def bounce_ball(self):
-    
-        
-        ball_end_position = Vector2()
-        ball_end_position.x = self. screen_center_x
-        ball_end_position.y = 100
-        ball_speed = Vector2()
-        ball_speed.x = 1 # how fast the ball moves in the x direction 
-        ball_speed.y = 2 
-        
-         #border check
-        if ball_end_position.y + 15 < 100 or ball_end_position.y + 15 > 660:
-           ball_start_position.y *= -1
-        if ball_end_position.x < 0 or ball_end_position.x > 960:
-           ball_start_position.x *= -1
-        
-        ballBounceAction = Action.move_to(ball_end_position.x,
-                                          ball_end_position.y + 15)
-        self.Ball.run_action(ballBounceAction)
-       
-        
-        ballnewposition = ball_end_position.x, ball_end_position.y + 10
     

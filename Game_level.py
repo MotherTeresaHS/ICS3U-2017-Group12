@@ -1,13 +1,21 @@
 # Level data for the 'BrickBreaker' game
 
-colors = {'r': 'pzl:Red8', 'g': 'pzl:Green8', 'b': 'pzl:Blue8', 'y': 'pzl:Yellow8', 'p': 'pzl:Purple8'}
+colors = {'r': 'pzl:Red4', 'g': 'pzl:Green4', 'b': 'pzl:Blue4', 'y': 'pzl:Yellow4', 'p': 'pzl:Purple4'}
 
 level1 = '''
- gggggggg
- gyyyyyyg
- gyrrrryg
- gyyyyyyg
- gggggggg
+ gggggggggggggggg
+ gggggggggggggggg
+ ggyyyyyyyyyyyygg
+ ggyrrrrrrrrrrygg
+ ggyrggggggggrygg
+ ggyrgyyyyyygrygg
+ ggyrgyrrrrygrygg
+ ggyrgyyyyyygrygg
+ ggyrggggggggrygg
+ ggyrrrrrrrrrrygg
+ ggyyyyyyyyyyyygg
+ gggggggggggggggg
+ gggggggggggggggg
 '''
 
 level2 = '''

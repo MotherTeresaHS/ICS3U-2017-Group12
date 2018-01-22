@@ -8,7 +8,7 @@ from scene import *
 import ui
 from Help_scene import*
 from Game_scene import*
-from main_menu_scene import *
+from main_menu_scene import*
 
 
 class PauseScene(Scene):
@@ -58,6 +58,8 @@ class PauseScene(Scene):
         # if start button is pressed, goto game scene
         if self.play_button.frame.contains_point(touch.location):
             self.dismiss_modal_scene()
+        elif self.quit_button.frame.contains_point(touch.location):
+            self.present_modal_scene(MainMenuScene())
 
 
 

@@ -9,10 +9,16 @@ import ui
 from Help_scene import*
 from Game_scene import*
 from settings_scene import*
+import sound
 
 class MainMenuScene(Scene):
     def setup(self):
         # this method is called, when user moves to this scene
+        self.size_of_screen_x = self.size.x
+        self.size_of_screen_y = self.size.y
+        self.screen_center_x = self.size_of_screen_x/2
+        self.screen_center_y = self.size_of_screen_y/2
+        
         
         # add background color
         self.background = SpriteNode('assets/sprites/brick_wall.png',
@@ -34,22 +40,22 @@ class MainMenuScene(Scene):
                                       position = (self.size.x/2, self.size.y * 0.80),
                                       parent = self)
         self.start_button = SpriteNode('assets/sprites/play_shaped_button.png',
-                                      position = (200,320),
+                                      position = (self.size.x/4, self.size.y * 0.40),
                                       size = (200,200),
                                       parent = self)
                                       
         self.settings_button = SpriteNode('assets/sprites/settings_shaped_button.png',
-                                          position = (500,200),
+                                          position = (self.size.x/2,self.size.y * 0.20),
                                           size = (200,200),
                                           parent = self)
         self.help_button = SpriteNode('assets/sprites/help_button.png',
-                                         position = (800,320),
+                                         position = (self.size.x * 0.75, self.size.y * 0.40),
                                          size = (200,200),
                                          parent = self)
     def update(self):
         # this method is called, hopefully, 60 times a second
+        #sound.play_effect('./assets/sounds/forgot.mp3')
         pass
-    
     def touch_began(self, touch):
         # this method is called, when user touches the screen
         pass

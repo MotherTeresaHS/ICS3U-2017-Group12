@@ -23,10 +23,16 @@ class HelpScene(Scene):
                                      parent = self, 
                                      size = self.size)
                                      
-        self.tutorial_text = LabelNode(text = '- Use the red button which is the shoot button on the left to shoot balls continually form the bar',
+        self.tutorial_text = LabelNode(text = '- Use the red button which is the shoot button on the left to shoot balls continually form the bar.',
                                       font=('Chalkduster', 20),
                                       parent = self,
                                       position = self.size / 2,
+                                      scale = 0.75)
+                                      
+        self.tutorial_text = LabelNode(text = '- Just for fun .',
+                                      font=('Chalkduster', 20),
+                                      parent = self,
+                                      position = (self.size.x/2,self.size.y/2 - 20),
                                       scale = 0.75)
                                       
         self.brick_text = LabelNode(font = ('Chalkduster',72),
@@ -36,20 +42,20 @@ class HelpScene(Scene):
                                     parent = self)
                                     
         self.back_button_position = Vector2()
-        self.back_button_position.x = 150
-        self.back_button_position.y = 700
+        self.back_button_position.x = self.size.x/2 - 350
+        self.back_button_position.y = self.size.y/2 + 300
         self.back_button = SpriteNode('./assets/sprites/back_button.png',
                                        parent = self,
                                        position = self.back_button_position)
-        self.help_button_position = Vector2()
-        self.help_button_position.x = 900
-        self.help_button_position.y = 700
+        self.credit_button_position = Vector2()
+        self.credit_button_position.x = self.size.x/2 + 300
+        self.credit_button_position.y = self.size.y/2 + 300
         self.credit_button = SpriteNode('./assets/sprites/credits_button.png',
-                                         position = self.help_button_position,
-                                         size = (100,100),
+                                         position = self.credit_button_position,
+                                         size = (200,100),
                                          parent = self)
                                          
-                                       #size = (300,120))
+                                       
                                        
         
     def update(self):

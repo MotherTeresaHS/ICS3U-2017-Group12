@@ -9,6 +9,7 @@ import ui
 from Help_scene import*
 from Game_scene import*
 from main_menu_scene import*
+from settings_scene import* 
 
 
 class PauseScene(Scene):
@@ -31,15 +32,19 @@ class PauseScene(Scene):
                                     
                                       
         self.play_button_position = Vector2()
-        self.play_button_position.x = 500
-        self.play_button_position.y = 500
+        self.play_button_position.x = self.size.x/2
+        self.play_button_position.y = self.size.y/4 + 350
         self.play_button = SpriteNode('./assets/sprites/play_button.png',
                                        parent = self,
                                        position = self.play_button_position)
                                        
         self.quit_button = SpriteNode('./assets/sprites/quit_button.png',
-                                       position = (500,200),
+                                       position = (self.size.x/2,self.size.y/4),
                                        parent = self)
+        self.settings_button = SpriteNode('assets/sprites/settings_shaped_button.png',
+                                          position = (self.size.x/2,self.size.y/2 - 20),
+                                          size = (200,200),
+                                          parent = self)
     def update(self):
         # this method is called, hopefully, 60 times a second
         pass
@@ -60,6 +65,8 @@ class PauseScene(Scene):
             self.dismiss_modal_scene()
         elif self.quit_button.frame.contains_point(touch.location):
             self.present_modal_scene(MainMenuScene())
+        elif self.settings_button.frame.contains_point(touch.location):
+             self.present_modal_scene(SettingScene())
 
 
 

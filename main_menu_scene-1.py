@@ -11,6 +11,8 @@ from Game_scene import*
 from settings_scene import*
 import sound
 
+
+
 class MainMenuScene(Scene):
     def setup(self):
         # this method is called, when user moves to this scene

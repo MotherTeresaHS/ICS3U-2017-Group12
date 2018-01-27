@@ -11,6 +11,7 @@ from pause_scene import*
 import time 
 from Game_over_scene import *
 from main_menu_scene import *
+import sound
 
 
 
@@ -66,8 +67,8 @@ class GameScene(Scene):
         
         # this will hold the speed and direction of the ball as an ordered pair
         self.ball_velocity = Vector2()
-        self.ball_velocity.x = +4.0 #5.0
-        self.ball_velocity.y = -4.0 #5.0
+        self.ball_velocity.x = +5.0 #5.0
+        self.ball_velocity.y = -5.0 #5.0
         
         # add background color
         background_position = Vector2(self.screen_center_x, 
@@ -85,17 +86,16 @@ class GameScene(Scene):
         self.paddle = SpriteNode('pzl:PaddleRed',
                                     parent = self,
                                     position = paddle_position,
-                                    scale = 0.90)
+                                    scale = 1.00)
                                 
         Ball_position = Vector2()
-        Ball_position.x = self.screen_center_x - 200
+        Ball_position.x = self.screen_center_x
         Ball_position.y = self.size.y/4
-        self.Ball = SpriteNode('./assets/sprites/Ball.png',
-                                 parent = self,
-                                 position = Ball_position,
-                                 color = 'white',
-                                 scale = 0.07)
-        obstacles = self.Ball
+        self.Ball = SpriteNode('pzl:BallBlue', #'./assets/sprites/Ball.png',
+                              parent = self,
+                              position = Ball_position,
+                              color = 'white',
+                              scale = 0.70)#0.07)
         fire_button_position = Vector2()
         fire_button_position.x = self.size.x * 0.90
         fire_button_position.y = self.size.y * 0.10
@@ -119,24 +119,25 @@ class GameScene(Scene):
                                      # parent = self)
                                      # for i in range (3)]
                                       
-        self.pause_position = Vector2()
-        self.pause_position.x = self.size.x * 0.90
-        self.pause_position.y = self.size.y * 0.95
-        self.pause_button = SpriteNode('iow:pause_32',
-                                       position = (self.pause_position),
-                                       parent = self,
-                                       size = (40,50))
+        #self.pause_position = Vector2()
+        #self.pause_position.x = self.size.x * 0.90
+        #self.pause_position.y = self.size.y * 0.95
+        #self.pause_button = SpriteNode('iow:pause_32',
+                                       #position = (self.pause_position),
+                                       #parent = self,
+                                       #scale = 1.50)
             
                                   
     def new_game(self):
       self.load_level(levels[self.level])
       self.ball_lost()
-      while self.time >= 0:
-        self.time = self.time - 1
-        self.time_label.text = 'time: ' + str(self.time)
-        time.sleep(1)
-      if self.time == 0:
-         print ('Blast off')
+      #while self.time >= 0:
+        #self.time = self.time - 1
+        #self.time_label.text = 'time: ' + str(self.time)
+        #time.sleep(1)
+      #if self.time == 0:
+         #print ('Blast off')
+
     def load_level(self, level_str):
        lines = level_str.splitlines()
        if self.size.w > 760:
@@ -165,6 +166,9 @@ class GameScene(Scene):
       #    print('stop')
     def update(self):
         # this method is called, hopefully, 60 times a second
+        if config.gamescene == True:
+          config.gamescene = False
+          self.dismiss_modal_scene()
         self.move_paddle()
         if (self.started == False):
             self.load_level(levels[self.level])
@@ -180,12 +184,17 @@ class GameScene(Scene):
         if self.Ball.frame.intersects(self.paddle.frame):
             # you should change the velocity to a different angle here
            self.ball_velocity.y = self.ball_velocity.y * (-1)
+           if config.sound == True:
+              sound.set_volume(50)
+              sound.play_effect('8ve:8ve-tap-mellow')
+           else :
+              sound.set_volume(0)
+              
         # bounce ball off walls
         if self.Ball.position.y <= 0:
             self.ball_velocity.y = self.ball_velocity.y * (0)
             self.present_modal_scene(GameOver())
         
-        #self.present_modal_scene(GameOver())
          
             # really it should not bounce, the game should end
         if self.Ball.position.x <= 0:
@@ -212,7 +221,6 @@ class GameScene(Scene):
                         self.bricks.remove(brick)
                         
         if len(self.bricks) > 0 and len(self.Balls) > 0:
-          #print('missile check')
           for brick in self.bricks:
               for self.Ball in self.Balls:
                   if brick.frame.contains_rect(self.Ball.frame):
@@ -221,7 +229,7 @@ class GameScene(Scene):
          
         if self.Ball.frame.intersects(brick.frame):
            #self.ball_velocity.y = self.ball_velocity.y * (-1)
-           self.ball_velocity.x = self.ball_velocity.x * (-1)
+           self.ball_velocity.y = self.ball_velocity.y * (-1)
 			
     def move_paddle(self):
        new = self.paddle_target - self.paddle.position.x
@@ -235,9 +243,11 @@ class GameScene(Scene):
         x, y = touch.location
         if self.fire_button.frame.contains_point(touch.location):
            self.create_new_ball()
-           
-        elif self.pause_button.frame.contains_point(touch.location):
-              self.present_modal_scene(PauseScene())
+           if config.sound == True:
+             sound.set_volume(50)
+             sound.play_effect('8ve:8ve-beep-bop')
+        #elif self.pause_button.frame.contains_point(touch.location):
+              #self.present_modal_scene(PauseScene())
         else:
             self.paddle_target = x
             
@@ -267,14 +277,7 @@ class GameScene(Scene):
         # this method is called, when user place app from background 
         # back into use. Reload anything you might need.
         pass
-    def ball_lost(self):
-       self.lives_left -= 1
-       for i, heart in enumerate(self.hearts):
-          heart.alpha = 1 if self.lives_left > i else 0
-          if self.lives_left <= 0:
-             print('game_over')
-          else:
-             self.Ball
+       
     def create_new_ball(self):
         # when the user hits the fire button
         
@@ -282,7 +285,7 @@ class GameScene(Scene):
         
         shoot_ball_start_position = Vector2()
         shoot_ball_start_position.x = self.paddle.position.x
-        shoot_ball_start_position.y = 100
+        shoot_ball_start_position.y = self.paddle.position.y
         
         shoot_ball_end_position = Vector2()
         shoot_ball_end_position.x = shoot_ball_start_position.x
@@ -291,7 +294,7 @@ class GameScene(Scene):
         
         self.shoot_ball.append(SpriteNode('./assets/sprites/shoot_ball.png',
                              position = shoot_ball_start_position,
-                             size = (30,30),
+                             scale = (0.20),
                              parent = self))
         
         

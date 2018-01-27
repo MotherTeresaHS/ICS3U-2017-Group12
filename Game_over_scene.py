@@ -9,7 +9,8 @@ from scene import *
 import ui
 import time
 from main_menu_scene import *
-from Game_scene import*
+from Game_scene import *
+import config
 
 
 class GameOver(Scene):
@@ -20,17 +21,11 @@ class GameOver(Scene):
         self.start_time = time.time()
         
         # add game logo background 
-        self.game_logo = SpriteNode('./assets/sprites/star_background.png',
+        self.game_logo = SpriteNode('./assets/sprites/brick_wall.png',
                                        parent = self,
                                        position = self.size/2,
                                        size = self.size)
-        self.resart_button_position = Vector2()
-        self.resart_button_position.y = self.size.y/4
-        self.resart_button_position.x = self.size.x/2-200
-        self.restart_button = SpriteNode('./assets/sprites/reload_button.png',
-                                         parent = self,
-                                         position = (self.resart_button_position),
-                                         size = (200,200))
+        
         self.game_over_text = LabelNode(font = ('Chalkduster',72),
                                     text = 'GAME_OVER',
                                     color = 'white',
@@ -38,8 +33,8 @@ class GameOver(Scene):
                                     parent = self)
         self.home_button = SpriteNode('./assets/sprites/home_button.png',
                                       parent = self,
-                                      position = (self.size.x/2 + 200, self.size.y/4),
-                                      size = (200,200))
+                                      position = (self.size.x/2 , self.size.y/4),
+                                      scale = 2.00)
         
     def update(self):
         # this method is called, hopefully, 60 times a second
@@ -57,10 +52,10 @@ class GameOver(Scene):
     
     def touch_ended(self, touch):
         # this method is called, when user releases a finger from the screen
-        if self.restart_button.frame.contains_point(touch.location):
-            self.present_modal_scene(GameScene())
-        elif self.home_button.frame.contains_point(touch.location):
-            self.present_modal_scene(MainMenuScene())
+        
+        if self.home_button.frame.contains_point(touch.location):
+            config.gamescene = True
+            self.dismiss_modal_scene()
     
     def did_change_size(self):
         # this method is called, when user changes the orientation of the screen

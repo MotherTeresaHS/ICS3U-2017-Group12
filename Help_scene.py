@@ -52,7 +52,7 @@ class HelpScene(Scene):
         self.credit_button_position.y = self.size.y/2 + 300
         self.credit_button = SpriteNode('./assets/sprites/credits_button.png',
                                          position = self.credit_button_position,
-                                         size = (200,100),
+                                         scale = 0.90,
                                          parent = self)
                                          
                                        

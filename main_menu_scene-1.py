@@ -16,6 +16,8 @@ import sound
 class MainMenuScene(Scene):
     def setup(self):
         # this method is called, when user moves to this scene
+        
+        
         self.size_of_screen_x = self.size.x
         self.size_of_screen_y = self.size.y
         self.screen_center_x = self.size_of_screen_x/2
@@ -37,25 +39,26 @@ class MainMenuScene(Scene):
                                     
                                    	
         self.breaker_text = LabelNode(font = ('Chalkduster',72),
-                                      text = 'DESTROYER',
+                                      text = 'SEEKER',
                                       color = 'gold',
                                       position = (self.size.x/2, self.size.y * 0.80),
                                       parent = self)
         self.start_button = SpriteNode('assets/sprites/play_shaped_button.png',
                                       position = (self.size.x/4, self.size.y * 0.40),
-                                      size = (200,200),
+                                      scale = 2.00,
                                       parent = self)
                                       
         self.settings_button = SpriteNode('assets/sprites/settings_shaped_button.png',
                                           position = (self.size.x/2,self.size.y * 0.20),
-                                          size = (200,200),
+                                          scale = 2.00,
                                           parent = self)
         self.help_button = SpriteNode('assets/sprites/help_button.png',
                                          position = (self.size.x * 0.75, self.size.y * 0.40),
-                                         size = (200,200),
+                                         scale = 2.00,
                                          parent = self)
     def update(self):
         # this method is called, hopefully, 60 times a second
+
         #sound.play_effect('./assets/sounds/forgot.mp3')
         pass
     def touch_began(self, touch):
@@ -92,3 +95,5 @@ class MainMenuScene(Scene):
         # back into use. Reload anything you might need.
         pass
     
+
+

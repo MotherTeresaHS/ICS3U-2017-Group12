@@ -43,7 +43,7 @@ class PauseScene(Scene):
                                        parent = self)
         self.settings_button = SpriteNode('assets/sprites/settings_shaped_button.png',
                                           position = (self.size.x/2,self.size.y/2 - 20),
-                                          size = (200,200),
+                                          scale = 2.00,
                                           parent = self)
     def update(self):
         # this method is called, hopefully, 60 times a second
